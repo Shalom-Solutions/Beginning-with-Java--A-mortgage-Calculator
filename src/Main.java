@@ -1,28 +1,50 @@
-import java.awt.*;
+// Mortgage Calculator
 import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.Scanner;
-//import java.util.Date;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
         final byte MONTHS_IN_YEAR = 12;
         final byte PERCENT = 100;
 
         Scanner scanner  = new Scanner(System.in);
-        System.out.println("Principal: ");
-        int principal = scanner.nextInt();
 
-        System.out.println("Annual Interest Rate: ");
-        float annualInterest = scanner.nextFloat();
-        float monthlyInterest = annualInterest / PERCENT / MONTHS_IN_YEAR;
+        int principal = 0;
+        float monthlyInterest = 0;
+        int numberOfPayments = 0;
 
-        System.out.println("Period (Years): ");
-        byte years = scanner.nextByte();
-        int numberOfPayments = years * MONTHS_IN_YEAR;
+        while (true) {
+            System.out.print("Principal: ");
+            principal = scanner.nextInt();
+            if (principal >= 1000 && principal <= 1_000_000)
+                break;
+            System.out.print("Enter a value between 1000 and 100000");
+        }
 
-        double mortage = principal * ( monthlyInterest * Math.pow(1 + monthlyInterest, numberOfPayments))
+        while (true) {
+            System.out.print("Annual Interest Rate: ");
+            float annualInterest = scanner.nextFloat();
+            if (annualInterest >= 1 && annualInterest <= 30) {
+                monthlyInterest = annualInterest / PERCENT / MONTHS_IN_YEAR;
+            break;
+        }
+            System.out.print("Enter a value between 1 and 30");
+        }
+
+        while (true) {
+            System.out.print("Period (Years): ");
+            byte years = scanner.nextByte();
+            if (years >= 1 && years <= 30) {
+                numberOfPayments = years * MONTHS_IN_YEAR;
+                break;
+            }
+            System.out.print("Enter a value between 1 and 30.");
+        }
+
+
+        double mortgage = principal * (monthlyInterest * Math.pow(1 + monthlyInterest, numberOfPayments)) / (Math.pow(1 + monthlyInterest, numberOfPayments) - 1);
+
+        String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgage);
+        System.out.print("Mortgage: " + mortgageFormatted);
     }
 }
